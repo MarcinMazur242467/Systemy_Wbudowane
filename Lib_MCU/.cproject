@@ -27,9 +27,9 @@
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.GNU_ELF" id="com.crt.advproject.platform.lib.debug.1651229694" name="ARM-based MCU (Debug)" superClass="com.crt.advproject.platform.lib.debug"/>
 							<builder buildPath="${workspace_loc:/CMSISv1p30_LPC17xx/Debug}" id="com.crt.advproject.builder.lib.debug.115305195" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.crt.advproject.builder.lib.debug"/>
 							<tool id="com.crt.advproject.cpp.lib.debug.1083870465" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.lib.debug">
-								<option id="com.crt.advproject.cpp.hdrlib.1993361921" superClass="com.crt.advproject.cpp.hdrlib"/>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1408119534" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
-								<option id="com.crt.advproject.cpp.fpu.1670011924" superClass="com.crt.advproject.cpp.fpu"/>
+								<option id="com.crt.advproject.cpp.hdrlib.1993361921" superClass="com.crt.advproject.cpp.hdrlib" useByScannerDiscovery="false"/>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1408119534" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false"/>
+								<option id="com.crt.advproject.cpp.fpu.1670011924" superClass="com.crt.advproject.cpp.fpu" useByScannerDiscovery="true"/>
 							</tool>
 							<tool id="com.crt.advproject.gcc.lib.debug.1253795442" name="MCU C Compiler" superClass="com.crt.advproject.gcc.lib.debug">
 								<option id="com.crt.advproject.gcc.arch.2107066979" name="Architecture" superClass="com.crt.advproject.gcc.arch" useByScannerDiscovery="true" value="com.crt.advproject.gcc.target.cm3" valueType="enumerated"/>
@@ -65,7 +65,7 @@
 								<option id="com.crt.advproject.gcc.hdrlib.1153527230" name="Use headers for C library" superClass="com.crt.advproject.gcc.hdrlib" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.config.1673845569" name="%crt.mcu.configname" superClass="com.crt.advproject.gcc.config" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.store.489478560" name="%crt.mcu.storename" superClass="com.crt.advproject.gcc.store" useByScannerDiscovery="false"/>
-								<option id="com.crt.advproject.gcc.fpu.1060640056" superClass="com.crt.advproject.gcc.fpu"/>
+								<option id="com.crt.advproject.gcc.fpu.1060640056" superClass="com.crt.advproject.gcc.fpu" useByScannerDiscovery="true"/>
 								<inputType id="com.crt.advproject.compiler.input.1619818617" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
 							<tool id="com.crt.advproject.gas.lib.debug.1221856873" name="MCU Assembler" superClass="com.crt.advproject.gas.lib.debug">

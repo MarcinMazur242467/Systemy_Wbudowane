@@ -12,11 +12,8 @@
 
 #include "lpc17xx_pinsel.h"
 #include "lpc17xx_i2c.h"
-#include "lpc17xx_gpio.h"
-#include "lpc17xx_ssp.h"
 #include "lpc17xx_adc.h"
 #include "lpc17xx_timer.h"
-#include "lpc17xx_pinsel.h"
 #include "lpc17xx_gpio.h"
 #include "lpc17xx_ssp.h"
 #include "lpc17xx_uart.h"
@@ -27,6 +24,13 @@
 #include "oled.h"
 #include "temp.h"
 #include "acc.h"
+#include "diskio.h"
+#include "ff.h"
+
+#define UART_DEV LPC_UART3
+
+static FILINFO Finfo;
+static FATFS Fatfs[1];
 
 
 static uint32_t msTicks = 0;
@@ -93,6 +97,30 @@ static uint32_t getTicks(void)
 {
     return msTicks;
 }
+static void init_uart(void)
+{
+	PINSEL_CFG_Type PinCfg;
+	UART_CFG_Type uartCfg;
+
+	/* Initialize UART3 pin connect */
+	PinCfg.Funcnum = 2;
+	PinCfg.Pinnum = 0;
+	PinCfg.Portnum = 0;
+	PINSEL_ConfigPin(&PinCfg);
+	PinCfg.Pinnum = 1;
+	PINSEL_ConfigPin(&PinCfg);
+
+	uartCfg.Baud_rate = 115200;
+	uartCfg.Databits = UART_DATABIT_8;
+	uartCfg.Parity = UART_PARITY_NONE;
+	uartCfg.Stopbits = UART_STOPBIT_1;
+
+	UART_Init(UART_DEV, &uartCfg);
+
+	UART_TxCmd(UART_DEV, ENABLE);
+
+}
+
 
 static void init_ssp(void)
 {
@@ -130,6 +158,7 @@ static void init_ssp(void)
 	SSP_Cmd(LPC_SSP1, ENABLE);
 
 }
+
 
 static void init_i2c(void)
 {
@@ -175,6 +204,8 @@ static void init_adc(void)
 
 }
 
+
+
 int main (void)
 {
     int32_t xoff = 0;
@@ -191,7 +222,6 @@ int main (void)
 
 
     init_i2c();
-    init_ssp();
     init_adc();
 
     oled_init();
@@ -220,14 +250,73 @@ int main (void)
 
     oled_putString(1,1,  (uint8_t*)"Young Leosia", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
 
+    DSTATUS stat;
+      DWORD p2;
+      WORD w1;
+      BYTE res, b1;
+      DIR dir;
+
+      int i = 0;
+
+
+      init_ssp();
+      init_uart();
+
+
+      printf("MMC/SD example\r\n");
+
+      SysTick_Config(SystemCoreClock / 100);
+
+      Timer0_Wait(500);
+
+      stat = disk_initialize(0);
+      if (stat & STA_NOINIT) {
+      	printf("MMC: not initialized\r\n");
+      }
+
+      if (stat & STA_NODISK) {
+      	printf("MMC: No Disk\r\n");
+      }
+
+      if (stat != 0) {
+          return 1;
+      }
+
+      printf("MMC: Initialized\r\n");
+
+      printf("Reading FLASH");
+
+      res = f_mount(0, &Fatfs[0]);
+      if(res != FR_OK) {
+    	  printf("Failed to mount");
+    	  return 1;
+      }
+
+
+      res = f_opendir(&dir, "/");
+      if(res) {
+    	  printf("Failed to open dir /");
+    	  return 1;
+      }
+
+
+      for(;;) {
+    	  res = f_readdir(&dir, &Finfo);
+    	  if ((res != FR_OK) || !Finfo.fname[0]) break;
+    	  printf((uint8_t*)&(Finfo.fname[0]));
+      }
+
+
     while(1) {
 
-        /* Accelerometer */
+        // Accelerometer
         acc_read(&x, &y, &z);
         x = x+xoff;
         y = y+yoff;
         z = z+zoff;
-
+        char str[80];
+        sprintf(str, "x:%i y:%i z:%i\n", x,y,z);
+        printf(str);
         /* delay */
         Timer0_Wait(200);
     }
