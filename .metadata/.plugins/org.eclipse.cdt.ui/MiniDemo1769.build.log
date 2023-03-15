@@ -1,0 +1,6 @@
+16:34:07 **** Incremental Build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 all 
+make: Nothing to be done for 'all'.
+
+16:34:07 Build Finished. 0 errors, 0 warnings. (took 115ms)
+

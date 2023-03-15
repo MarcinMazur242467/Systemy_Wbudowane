@@ -1,0 +1,9 @@
+core_cm3.h:1504:22:NVIC_EnableIRQ	16	static
+core_cm3.h:1588:22:NVIC_SetPriority	16	static
+core_cm3.h:1696:26:SysTick_Config	16	static
+main.c:59:1:init_LED_port_and_pin	24	static
+main.c:84:1:init_all_LEDs	8	static
+main.c:104:1:init_Systick	8	static
+main.c:119:1:init_Timer	32	static
+main.c:150:1:main	16	static
+main.c:203:1:blad_krytyczny	16	static

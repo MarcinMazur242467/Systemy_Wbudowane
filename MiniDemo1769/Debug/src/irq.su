@@ -1,0 +1,2 @@
+irq.c:16:1:TIMER1_IRQHandler	8	static
+irq.c:45:1:SysTick_Handler	4	static

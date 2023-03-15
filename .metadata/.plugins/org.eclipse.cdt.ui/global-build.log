@@ -1,0 +1,226 @@
+16:32:50 **** Clean-only build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 clean 
+rm -rf  ./src/cr_startup_lpc17.o ./src/irq.o ./src/main.o  ./MCU/src/lpc17xx_clkpwr.o ./MCU/src/lpc17xx_gpio.o ./MCU/src/lpc17xx_nvic.o ./MCU/src/lpc17xx_pinsel.o ./MCU/src/lpc17xx_systick.o ./MCU/src/lpc17xx_timer.o  ./CMSIS/src/core_cm3.o ./CMSIS/src/system_LPC17xx.o  ./src/cr_startup_lpc17.d ./src/irq.d ./src/main.d  ./MCU/src/lpc17xx_clkpwr.d ./MCU/src/lpc17xx_gpio.d ./MCU/src/lpc17xx_nvic.d ./MCU/src/lpc17xx_pinsel.d ./MCU/src/lpc17xx_systick.d ./MCU/src/lpc17xx_timer.d  ./CMSIS/src/core_cm3.d ./CMSIS/src/system_LPC17xx.d  MiniDemo1768.axf
+ 
+16:32:50 **** Build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 all 
+Building file: ../src/cr_startup_lpc17.c
+Building file: ../src/irq.c
+Building file: ../src/main.c
+Building file: ../MCU/src/lpc17xx_clkpwr.c
+Building file: ../MCU/src/lpc17xx_gpio.c
+Building file: ../MCU/src/lpc17xx_nvic.c
+Invoking: MCU C Compiler
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"src/cr_startup_lpc17.d" -MT"src/cr_startup_lpc17.o" -MT"src/cr_startup_lpc17.d" -o "src/cr_startup_lpc17.o" "../src/cr_startup_lpc17.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"src/irq.d" -MT"src/irq.o" -MT"src/irq.d" -o "src/irq.o" "../src/irq.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" -MT"src/main.d" -o "src/main.o" "../src/main.c"
+Invoking: MCU C Compiler
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_clkpwr.d" -MT"MCU/src/lpc17xx_clkpwr.o" -MT"MCU/src/lpc17xx_clkpwr.d" -o "MCU/src/lpc17xx_clkpwr.o" "../MCU/src/lpc17xx_clkpwr.c"
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_gpio.d" -MT"MCU/src/lpc17xx_gpio.o" -MT"MCU/src/lpc17xx_gpio.d" -o "MCU/src/lpc17xx_gpio.o" "../MCU/src/lpc17xx_gpio.c"
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_nvic.d" -MT"MCU/src/lpc17xx_nvic.o" -MT"MCU/src/lpc17xx_nvic.d" -o "MCU/src/lpc17xx_nvic.o" "../MCU/src/lpc17xx_nvic.c"
+Building file: ../MCU/src/lpc17xx_pinsel.c
+Building file: ../MCU/src/lpc17xx_systick.c
+Building file: ../MCU/src/lpc17xx_timer.c
+Building file: ../CMSIS/src/core_cm3.c
+Building file: ../CMSIS/src/system_LPC17xx.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_pinsel.d" -MT"MCU/src/lpc17xx_pinsel.o" -MT"MCU/src/lpc17xx_pinsel.d" -o "MCU/src/lpc17xx_pinsel.o" "../MCU/src/lpc17xx_pinsel.c"
+Invoking: MCU C Compiler
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_systick.d" -MT"MCU/src/lpc17xx_systick.o" -MT"MCU/src/lpc17xx_systick.d" -o "MCU/src/lpc17xx_systick.o" "../MCU/src/lpc17xx_systick.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_timer.d" -MT"MCU/src/lpc17xx_timer.o" -MT"MCU/src/lpc17xx_timer.d" -o "MCU/src/lpc17xx_timer.o" "../MCU/src/lpc17xx_timer.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../CMSIS/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"CMSIS/src/core_cm3.d" -MT"CMSIS/src/core_cm3.o" -MT"CMSIS/src/core_cm3.d" -o "CMSIS/src/core_cm3.o" "../CMSIS/src/core_cm3.c"
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../CMSIS/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"CMSIS/src/system_LPC17xx.d" -MT"CMSIS/src/system_LPC17xx.o" -MT"CMSIS/src/system_LPC17xx.d" -o "CMSIS/src/system_LPC17xx.o" "../CMSIS/src/system_LPC17xx.c"
+Finished building: ../src/cr_startup_lpc17.c
+Finished building: ../src/irq.c
+ 
+../MCU/src/lpc17xx_timer.c: In function 'TIM_GetIntStatus':
+../MCU/src/lpc17xx_timer.c:162:9: error: conversion from 'long unsigned int' to 'uint8_t' {aka 'unsigned char'} may change value [-Werror=conversion]
+  162 |  temp = (TIMx->IR) & (uint8_t)TIM_IR_CLR(IntFlag);
+      |         ^
+../MCU/src/lpc17xx_timer.c: In function 'TIM_GetIntCaptureStatus':
+../MCU/src/lpc17xx_timer.c:192:9: error: conversion from 'long unsigned int' to 'uint8_t' {aka 'unsigned char'} may change value [-Werror=conversion]
+  192 |  temp = (TIMx->IR) & (uint8_t)(1 << (4 + IntFlag));
+      |         ^
+../MCU/src/lpc17xx_timer.c: In function 'Timer0_Wait':
+../MCU/src/lpc17xx_timer.c:624:2: error: this 'while' clause does not guard... [-Werror=misleading-indentation]
+  624 |  while ( !(TIM_GetIntStatus(LPC_TIM0,0)));
+      |  ^~~~~
+../MCU/src/lpc17xx_timer.c:625:3: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'while'
+  625 |   TIM_ClearIntPending(LPC_TIM0,0);
+      |   ^~~~~~~~~~~~~~~~~~~
+ 
+../MCU/src/lpc17xx_timer.c: In function 'Timer0_us_Wait':
+../MCU/src/lpc17xx_timer.c:654:2: error: this 'while' clause does not guard... [-Werror=misleading-indentation]
+  654 |  while ( !(TIM_GetIntStatus(LPC_TIM0,0)));
+      |  ^~~~~
+../MCU/src/lpc17xx_timer.c:655:3: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'while'
+Finished building: ../MCU/src/lpc17xx_clkpwr.c
+  655 |   TIM_ClearIntPending(LPC_TIM0,0);
+      |   ^~~~~~~~~~~~~~~~~~~
+Finished building: ../MCU/src/lpc17xx_nvic.c
+Finished building: ../src/main.c
+ 
+ 
+ 
+Finished building: ../MCU/src/lpc17xx_gpio.c
+cc1.exe: all warnings being treated as errors
+Finished building: ../MCU/src/lpc17xx_pinsel.c
+make: *** [MCU/src/subdir.mk:37: MCU/src/lpc17xx_timer.o] Error 1
+make: *** Waiting for unfinished jobs....
+Finished building: ../MCU/src/lpc17xx_systick.c
+Finished building: ../CMSIS/src/core_cm3.c
+ 
+Finished building: ../CMSIS/src/system_LPC17xx.c
+ 
+ 
+ 
+ 
+"make -r -j16 all" terminated with exit code 2. Build might be incomplete.
+16:33:27 **** Incremental Build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 all 
+Building file: ../src/main.c
+Building file: ../MCU/src/lpc17xx_timer.c
+Invoking: MCU C Compiler
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.c"
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_timer.d" -MT"MCU/src/lpc17xx_timer.o" -MT"MCU/src/lpc17xx_timer.d" -o "MCU/src/lpc17xx_timer.o" "../MCU/src/lpc17xx_timer.c"
+../MCU/src/lpc17xx_timer.c: In function 'TIM_GetIntStatus':
+../MCU/src/lpc17xx_timer.c:162:9: error: conversion from 'long unsigned int' to 'uint8_t' {aka 'unsigned char'} may change value [-Werror=conversion]
+  162 |  temp = (TIMx->IR) & (uint8_t)TIM_IR_CLR(IntFlag);
+      |         ^
+../MCU/src/lpc17xx_timer.c: In function 'TIM_GetIntCaptureStatus':
+../MCU/src/lpc17xx_timer.c:192:9: error: conversion from 'long unsigned int' to 'uint8_t' {aka 'unsigned char'} may change value [-Werror=conversion]
+  192 |  temp = (TIMx->IR) & (uint8_t)(1 << (4 + IntFlag));
+      |         ^
+../MCU/src/lpc17xx_timer.c: In function 'Timer0_Wait':
+../MCU/src/lpc17xx_timer.c:624:2: error: this 'while' clause does not guard... [-Werror=misleading-indentation]
+  624 |  while ( !(TIM_GetIntStatus(LPC_TIM0,0)));
+      |  ^~~~~
+../MCU/src/lpc17xx_timer.c:625:3: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'while'
+  625 |   TIM_ClearIntPending(LPC_TIM0,0);
+      |   ^~~~~~~~~~~~~~~~~~~
+../MCU/src/lpc17xx_timer.c: In function 'Timer0_us_Wait':
+../MCU/src/lpc17xx_timer.c:654:2: error: this 'while' clause does not guard... [-Werror=misleading-indentation]
+  654 |  while ( !(TIM_GetIntStatus(LPC_TIM0,0)));
+      |  ^~~~~
+../MCU/src/lpc17xx_timer.c:655:3: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'while'
+  655 |   TIM_ClearIntPending(LPC_TIM0,0);
+      |   ^~~~~~~~~~~~~~~~~~~
+cc1.exe: all warnings being treated as errors
+make: *** [MCU/src/subdir.mk:35: MCU/src/lpc17xx_timer.o] Error 1
+make: *** Waiting for unfinished jobs....
+Finished building: ../src/main.c
+ 
+"make -r -j16 all" terminated with exit code 2. Build might be incomplete.
+16:33:28 **** Incremental Build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 all 
+Building file: ../MCU/src/lpc17xx_timer.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wconversion -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_timer.d" -MT"MCU/src/lpc17xx_timer.o" -MT"MCU/src/lpc17xx_timer.d" -o "MCU/src/lpc17xx_timer.o" "../MCU/src/lpc17xx_timer.c"
+../MCU/src/lpc17xx_timer.c: In function 'TIM_GetIntStatus':
+../MCU/src/lpc17xx_timer.c:162:9: error: conversion from 'long unsigned int' to 'uint8_t' {aka 'unsigned char'} may change value [-Werror=conversion]
+  162 |  temp = (TIMx->IR) & (uint8_t)TIM_IR_CLR(IntFlag);
+      |         ^
+../MCU/src/lpc17xx_timer.c: In function 'TIM_GetIntCaptureStatus':
+../MCU/src/lpc17xx_timer.c:192:9: error: conversion from 'long unsigned int' to 'uint8_t' {aka 'unsigned char'} may change value [-Werror=conversion]
+  192 |  temp = (TIMx->IR) & (uint8_t)(1 << (4 + IntFlag));
+      |         ^
+../MCU/src/lpc17xx_timer.c: In function 'Timer0_Wait':
+../MCU/src/lpc17xx_timer.c:624:2: error: this 'while' clause does not guard... [-Werror=misleading-indentation]
+  624 |  while ( !(TIM_GetIntStatus(LPC_TIM0,0)));
+      |  ^~~~~
+../MCU/src/lpc17xx_timer.c:625:3: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'while'
+  625 |   TIM_ClearIntPending(LPC_TIM0,0);
+      |   ^~~~~~~~~~~~~~~~~~~
+../MCU/src/lpc17xx_timer.c: In function 'Timer0_us_Wait':
+../MCU/src/lpc17xx_timer.c:654:2: error: this 'while' clause does not guard... [-Werror=misleading-indentation]
+  654 |  while ( !(TIM_GetIntStatus(LPC_TIM0,0)));
+      |  ^~~~~
+../MCU/src/lpc17xx_timer.c:655:3: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'while'
+  655 |   TIM_ClearIntPending(LPC_TIM0,0);
+      |   ^~~~~~~~~~~~~~~~~~~
+cc1.exe: all warnings being treated as errors
+make: *** [MCU/src/subdir.mk:35: MCU/src/lpc17xx_timer.o] Error 1
+"make -r -j16 all" terminated with exit code 2. Build might be incomplete.
+16:34:05 **** Clean-only build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 clean 
+rm -rf  ./src/cr_startup_lpc17.o ./src/irq.o ./src/main.o  ./MCU/src/lpc17xx_clkpwr.o ./MCU/src/lpc17xx_gpio.o ./MCU/src/lpc17xx_nvic.o ./MCU/src/lpc17xx_pinsel.o ./MCU/src/lpc17xx_systick.o ./MCU/src/lpc17xx_timer.o  ./CMSIS/src/core_cm3.o ./CMSIS/src/system_LPC17xx.o  ./src/cr_startup_lpc17.d ./src/irq.d ./src/main.d  ./MCU/src/lpc17xx_clkpwr.d ./MCU/src/lpc17xx_gpio.d ./MCU/src/lpc17xx_nvic.d ./MCU/src/lpc17xx_pinsel.d ./MCU/src/lpc17xx_systick.d ./MCU/src/lpc17xx_timer.d  ./CMSIS/src/core_cm3.d ./CMSIS/src/system_LPC17xx.d  MiniDemo1768.axf
+ 
+16:34:05 **** Incremental Build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 all 
+Building file: ../src/cr_startup_lpc17.c
+Building file: ../src/irq.c
+Building file: ../src/main.c
+Building file: ../MCU/src/lpc17xx_gpio.c
+Building file: ../MCU/src/lpc17xx_clkpwr.c
+Building file: ../MCU/src/lpc17xx_nvic.c
+Invoking: MCU C Compiler
+Building file: ../MCU/src/lpc17xx_pinsel.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"src/cr_startup_lpc17.d" -MT"src/cr_startup_lpc17.o" -MT"src/cr_startup_lpc17.d" -o "src/cr_startup_lpc17.o" "../src/cr_startup_lpc17.c"
+Invoking: MCU C Compiler
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"src/irq.d" -MT"src/irq.o" -MT"src/irq.d" -o "src/irq.o" "../src/irq.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" -MT"src/main.d" -o "src/main.o" "../src/main.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_clkpwr.d" -MT"MCU/src/lpc17xx_clkpwr.o" -MT"MCU/src/lpc17xx_clkpwr.d" -o "MCU/src/lpc17xx_clkpwr.o" "../MCU/src/lpc17xx_clkpwr.c"
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_gpio.d" -MT"MCU/src/lpc17xx_gpio.o" -MT"MCU/src/lpc17xx_gpio.d" -o "MCU/src/lpc17xx_gpio.o" "../MCU/src/lpc17xx_gpio.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_nvic.d" -MT"MCU/src/lpc17xx_nvic.o" -MT"MCU/src/lpc17xx_nvic.d" -o "MCU/src/lpc17xx_nvic.o" "../MCU/src/lpc17xx_nvic.c"
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_pinsel.d" -MT"MCU/src/lpc17xx_pinsel.o" -MT"MCU/src/lpc17xx_pinsel.d" -o "MCU/src/lpc17xx_pinsel.o" "../MCU/src/lpc17xx_pinsel.c"
+Building file: ../MCU/src/lpc17xx_systick.c
+Building file: ../MCU/src/lpc17xx_timer.c
+Building file: ../CMSIS/src/core_cm3.c
+Building file: ../CMSIS/src/system_LPC17xx.c
+Invoking: MCU C Compiler
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_systick.d" -MT"MCU/src/lpc17xx_systick.o" -MT"MCU/src/lpc17xx_systick.d" -o "MCU/src/lpc17xx_systick.o" "../MCU/src/lpc17xx_systick.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../MCU/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"MCU/src/lpc17xx_timer.d" -MT"MCU/src/lpc17xx_timer.o" -MT"MCU/src/lpc17xx_timer.d" -o "MCU/src/lpc17xx_timer.o" "../MCU/src/lpc17xx_timer.c"
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../CMSIS/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"CMSIS/src/core_cm3.d" -MT"CMSIS/src/core_cm3.o" -MT"CMSIS/src/core_cm3.d" -o "CMSIS/src/core_cm3.o" "../CMSIS/src/core_cm3.c"
+arm-none-eabi-gcc -std=c11 -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__NEWLIB__ -I"C:\mp3\MiniDemo1769\CMSIS\inc" -I"C:\mp3\MiniDemo1769\MCU\inc" -O0 -g3 -c -fmessage-length=0 -fno-builtin -ffunction-sections -fmerge-constants -fmacro-prefix-map="../CMSIS/src/"=. -mcpu=cortex-m3 -mthumb -D__NEWLIB__ -fstack-usage -MMD -MP -MF"CMSIS/src/system_LPC17xx.d" -MT"CMSIS/src/system_LPC17xx.o" -MT"CMSIS/src/system_LPC17xx.d" -o "CMSIS/src/system_LPC17xx.o" "../CMSIS/src/system_LPC17xx.c"
+Finished building: ../src/cr_startup_lpc17.c
+ 
+Finished building: ../src/irq.c
+ 
+Finished building: ../MCU/src/lpc17xx_clkpwr.c
+Finished building: ../MCU/src/lpc17xx_nvic.c
+Finished building: ../MCU/src/lpc17xx_pinsel.c
+ 
+Finished building: ../src/main.c
+Finished building: ../MCU/src/lpc17xx_gpio.c
+ 
+ 
+ 
+ 
+Finished building: ../MCU/src/lpc17xx_systick.c
+Finished building: ../CMSIS/src/core_cm3.c
+Finished building: ../CMSIS/src/system_LPC17xx.c
+ 
+ 
+ 
+Finished building: ../MCU/src/lpc17xx_timer.c
+ 
+Building target: MiniDemo1768.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"C:\mp3\MiniDemo1769\MCU\src" -L"C:\mp3\MiniDemo1769\CMSIS\src" -Xlinker --gc-sections -Xlinker -Map=MiniDemo1768.map -mcpu=cortex-m3 -mthumb -T "MiniDemo1769_Debug.ld" -o "MiniDemo1768.axf"  ./src/cr_startup_lpc17.o ./src/irq.o ./src/main.o  ./MCU/src/lpc17xx_clkpwr.o ./MCU/src/lpc17xx_gpio.o ./MCU/src/lpc17xx_nvic.o ./MCU/src/lpc17xx_pinsel.o ./MCU/src/lpc17xx_systick.o ./MCU/src/lpc17xx_timer.o  ./CMSIS/src/core_cm3.o ./CMSIS/src/system_LPC17xx.o   
+Finished building target: MiniDemo1768.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size MiniDemo1768.axf; # arm-none-eabi-objdump -h -S MiniDemo1768.axf >MiniDemo1768.lss
+   text	   data	    bss	    dec	    hex	filename
+  34044	   2476	    156	  36676	   8f44	MiniDemo1768.axf
+ 
+16:34:07 **** Incremental Build of configuration Debug for project MiniDemo1769 ****
+make -r -j16 all 
+make: Nothing to be done for 'all'.

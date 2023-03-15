@@ -1,0 +1,2 @@
+system_LPC17xx.c:425:6:SystemCoreClockUpdate	16	static
+system_LPC17xx.c:479:6:SystemInit	4	static
