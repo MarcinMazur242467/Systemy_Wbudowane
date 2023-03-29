@@ -30,6 +30,7 @@
 #define UART_DEV LPC_UART3
 
 static FILINFO Finfo;
+static FIL file;
 static FATFS Fatfs[1];
 
 
@@ -224,6 +225,8 @@ int main (void)
     init_i2c();
     init_adc();
 
+    init_ssp();
+    init_uart();
     oled_init();
     light_init();
     acc_init();
@@ -259,8 +262,7 @@ int main (void)
       int i = 0;
 
 
-      init_ssp();
-      init_uart();
+
 
 
       printf("MMC/SD example\r\n");
@@ -299,24 +301,78 @@ int main (void)
     	  return 1;
       }
 
+      char fileNames[20][13];
+      int index = 0;
+      char wavFiles[20][13];
 
       for(;;) {
     	  res = f_readdir(&dir, &Finfo);
-    	  if ((res != FR_OK) || !Finfo.fname[0]) break;
-    	  printf((uint8_t*)&(Finfo.fname[0]));
+    	  if ((res != FR_OK) || !Finfo.fname[0])
+    		  break;
+
+    	  char substring[4];
+    	  int j = 0;
+    	  int len = strlen(Finfo.fname);
+    	  for(int k = len-4; k < len; k++) {
+    		  substring[j] = Finfo.fname[k];
+    		  j++;
+    	  }
+    	  char wav[4] = ".wav";
+    	  if(strcmp(wav, substring) != 32)
+    		  continue;
+
+
+
+    	  for(int j = 0; j < 13; j++) {
+        	  wavFiles[index][j] = Finfo.fname[j];
+    		  if(j < strlen(Finfo.fname)-4)
+        		  fileNames[index][j] = Finfo.fname[j];
+    		  else
+    			  fileNames[index][j] = '\0';
+    	  }
+    	  index++;
+      }
+      for(int i = 0; i < index; i++) {
+    	  printf((uint8_t*)&(fileNames[i][0]));
+    	  printf("\n");
       }
 
 
-    while(1) {
 
+
+      int prevChosenFileIndex = 0;
+      int chosenFileIndex = 0;
+
+    while(1) {
         // Accelerometer
         acc_read(&x, &y, &z);
         x = x+xoff;
         y = y+yoff;
         z = z+zoff;
+
+        //switch songs on tilt
+    	prevChosenFileIndex = chosenFileIndex;
+        if((x >= 30 && z <=30)&&chosenFileIndex != 0)
+        	chosenFileIndex-=1;
+
+        if((x <= -30 && z <=30)&&chosenFileIndex != index)
+        	chosenFileIndex+=1;
+
+        if(chosenFileIndex != prevChosenFileIndex){
+			oled_clearScreen(OLED_COLOR_WHITE);
+			char name[strlen(fileNames[chosenFileIndex]+3)];
+			sprintf(name, "%i. %s", chosenFileIndex+1, fileNames[chosenFileIndex]);
+			oled_putString(1,1,name, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+
+			UINT br;
+			UINT btr[10];
+			f_open(&file, "FLOYD.WAV", 0x01);//&wavFiles[chosenFileIndex]
+			//f_read(&file, btr, 10, &br);
+			printf(btr);
+        }
         char str[80];
-        sprintf(str, "x:%i y:%i z:%i\n", x,y,z);
-        printf(str);
+        //sprintf(str, "x:%i y:%i z:%i\n", x,y,z);
+        //printf(str);
         /* delay */
         Timer0_Wait(200);
     }
