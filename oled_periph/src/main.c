@@ -321,8 +321,6 @@ int main (void)
     	  if(strcmp(wav, substring) != 32)
     		  continue;
 
-
-
     	  for(int j = 0; j < 13; j++) {
         	  wavFiles[index][j] = Finfo.fname[j];
     		  if(j < strlen(Finfo.fname)-4)
@@ -333,7 +331,8 @@ int main (void)
     	  index++;
       }
       for(int i = 0; i < index; i++) {
-    	  printf((uint8_t*)&(fileNames[i][0]));
+    	  printf("\n");
+    	  printf((uint8_t*)&(wavFiles[i][0]));
     	  printf("\n");
       }
 
@@ -352,29 +351,43 @@ int main (void)
 
         //switch songs on tilt
     	prevChosenFileIndex = chosenFileIndex;
-        if((x >= 30 && z <=30)&&chosenFileIndex != 0)
+        if((x >= 20 && z <=20)&&chosenFileIndex != 0)
         	chosenFileIndex-=1;
 
-        if((x <= -30 && z <=30)&&chosenFileIndex != index)
+        if((x <= -20 && z <=20)&&chosenFileIndex != index)
         	chosenFileIndex+=1;
 
         if(chosenFileIndex != prevChosenFileIndex){
+        	printf("Zmiana piosenki");
 			oled_clearScreen(OLED_COLOR_WHITE);
 			char name[strlen(fileNames[chosenFileIndex]+3)];
 			sprintf(name, "%i. %s", chosenFileIndex+1, fileNames[chosenFileIndex]);
 			oled_putString(1,1,name, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
 
+			f_close(&file);
+			BYTE buffer[4096];
 			UINT br;
-			UINT btr[10];
-			f_open(&file, "FLOYD.WAV", 0x01);//&wavFiles[chosenFileIndex]
-			//f_read(&file, btr, 10, &br);
-			printf(btr);
-        }
+			f_open(&file,wavFiles[chosenFileIndex], FA_READ);
+			printf("Start reading file;\n");
+			for(;;) {
+				f_read(&file, buffer, sizeof buffer, &br);
+		        /*printf("\n");
+		        printf(br);
+		        printf(". ");
+		        printf(buffer);*/
+		        if(br == 0) { //eof
+		        	printf("End of file;\n");
+		        	break;
+		        }
+		        }
+			}
+
+
         char str[80];
         //sprintf(str, "x:%i y:%i z:%i\n", x,y,z);
         //printf(str);
         /* delay */
-        Timer0_Wait(200);
+        Timer0_Wait(100);
     }
 }
 
