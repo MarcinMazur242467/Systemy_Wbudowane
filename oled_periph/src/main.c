@@ -18,6 +18,7 @@
 #include "lpc17xx_ssp.h"
 #include "lpc17xx_uart.h"
 #include "lpc17xx_timer.h"
+#include "lpc17xx_clkpwr.h"
 #include "stdio.h"
 
 #include "light.h"
@@ -205,6 +206,58 @@ static void init_adc(void)
 
 }
 
+static void init_Timer (int delay)
+{
+	TIM_TIMERCFG_Type Config;
+	TIM_MATCHCFG_Type Match_Cfg;
+
+	Config.PrescaleOption = TIM_PRESCALE_USVAL;
+	Config.PrescaleValue = 1;
+
+
+	CLKPWR_SetPCLKDiv (CLKPWR_PCLKSEL_TIMER1, CLKPWR_PCLKSEL_CCLK_DIV_1);
+	TIM_Init (LPC_TIM1, TIM_TIMER_MODE, &Config);
+
+	Match_Cfg.ExtMatchOutputType = TIM_EXTMATCH_NOTHING;
+	Match_Cfg.IntOnMatch = TRUE;
+	Match_Cfg.ResetOnMatch = TRUE;
+	Match_Cfg.StopOnMatch = FALSE;
+	Match_Cfg.MatchChannel = 0;
+	Match_Cfg.MatchValue = delay;
+	TIM_ConfigMatch (LPC_TIM1, &Match_Cfg);
+	TIM_Cmd (LPC_TIM1, ENABLE);
+
+	NVIC_EnableIRQ (TIMER1_IRQn);
+}
+
+BYTE buffer1[4096];
+BYTE buffer2[4096];
+UINT br;
+int start = 1;
+
+int playingBuffer = 1;
+int iterator = 45;
+void TIMER1_IRQHandler (void) {
+
+			if(playingBuffer == 1)
+				DAC_UpdateValue(LPC_DAC, (uint32_t)buffer1[iterator]);
+			else if(playingBuffer == 2)
+				DAC_UpdateValue(LPC_DAC, (uint32_t)buffer2[iterator]);
+
+			iterator++;
+			//Timer0_us_Wait(delay);
+			if(iterator == 4095){
+				if(playingBuffer == 1)
+					playingBuffer = 2;
+				else if(playingBuffer == 2)
+					playingBuffer = 1;
+
+				iterator = 0;
+			}
+
+		TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
+}
+
 
 
 int main (void)
@@ -226,10 +279,31 @@ int main (void)
     init_adc();
 
     init_ssp();
+    /*
+    	 * Init DAC pin connect
+    	 * AOUT on P0.26
+    	 */
+    	PINSEL_CFG_Type PinCfg;
+    	PinCfg.Funcnum = 2;
+    	PinCfg.OpenDrain = 0;
+    	PinCfg.Pinmode = 0;
+    	PinCfg.Pinnum = 26;
+    	PinCfg.Portnum = 0;
+    	PINSEL_ConfigPin(&PinCfg);
+
+    	/* init DAC structure to default
+    	 * Maximum	current is 700 uA
+    	 * First value to AOUT is 0
+    	 */
+    	DAC_Init(LPC_DAC);
+
     init_uart();
+
     oled_init();
     light_init();
     acc_init();
+
+
 
     temp_init (&getTicks);
 
@@ -244,7 +318,7 @@ int main (void)
     acc_read(&x, &y, &z);
     xoff = 0-x;
     yoff = 0-y;
-    zoff = 64-z;
+    zoff = 0-z;
 
     light_enable();
     light_setRange(LIGHT_RANGE_4000);
@@ -340,7 +414,7 @@ int main (void)
 
 
       int prevChosenFileIndex = 0;
-      int chosenFileIndex = 0;
+      int chosenFileIndex = -1;
 
     while(1) {
         // Accelerometer
@@ -351,10 +425,10 @@ int main (void)
 
         //switch songs on tilt
     	prevChosenFileIndex = chosenFileIndex;
-        if((x >= 20 && z <=20)&&chosenFileIndex != 0)
+        if((x >= 20)&&chosenFileIndex != 0)
         	chosenFileIndex-=1;
 
-        if((x <= -20 && z <=20)&&chosenFileIndex != index)
+        if((x <= -20)&&chosenFileIndex != index)
         	chosenFileIndex+=1;
 
         if(chosenFileIndex != prevChosenFileIndex){
@@ -362,25 +436,40 @@ int main (void)
 			oled_clearScreen(OLED_COLOR_WHITE);
 			char name[strlen(fileNames[chosenFileIndex]+3)];
 			sprintf(name, "%i. %s", chosenFileIndex+1, fileNames[chosenFileIndex]);
+			printf(name);
 			oled_putString(1,1,name, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
 
 			f_close(&file);
-			BYTE buffer[4096];
-			UINT br;
+
 			f_open(&file,wavFiles[chosenFileIndex], FA_READ);
 			printf("Start reading file;\n");
-			for(;;) {
-				f_read(&file, buffer, sizeof buffer, &br);
-		        /*printf("\n");
-		        printf(br);
-		        printf(". ");
-		        printf(buffer);*/
-		        if(br == 0) { //eof
-		        	printf("End of file;\n");
-		        	break;
-		        }
-		        }
+		    int wsk = 0;
+			wsk+=24;
+			f_read(&file, buffer1, sizeof buffer1, &br);
+			int sampleRate = (buffer1[wsk]
+									 | (buffer1[wsk+1] << 8)
+									 |(buffer1[wsk+2] << 16)
+									 | (buffer1[wsk+3] << 24));
+
+			int delay = 1000/8;//1000000 / sampleRate;
+			init_Timer(delay);
+
 			}
+        int lastLoadedBuffer = 1;
+    	for(;;) {
+    		if(lastLoadedBuffer != playingBuffer)
+    			continue;
+
+    		if(playingBuffer == 2)
+    			f_read(&file, buffer1, sizeof buffer1, &br);
+    		else if(playingBuffer == 1)
+    		    f_read(&file, buffer2, sizeof buffer2, &br);
+
+	        if(br == 0) { //eof
+	        	printf("End of file;\n");
+	        	break;
+	        }
+    	}
 
 
         char str[80];
