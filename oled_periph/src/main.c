@@ -99,6 +99,8 @@ static uint32_t getTicks(void)
 {
     return msTicks;
 }
+
+
 static void init_uart(void)
 {
 	PINSEL_CFG_Type PinCfg;
@@ -283,6 +285,27 @@ void TIMER1_IRQHandler (void) {
 
 
 
+void changeVolume(uint32_t trim ){
+	if(trim >= 3000 ){
+		GPIO_SetValue(0,1<<28);
+		for(int i =0;i<16;i++){
+			Timer0_Wait(10);
+			GPIO_SetValue(0,1<<27);
+			Timer0_Wait(10);
+			GPIO_ClearValue(0,1<<27);
+		}
+	}else if(trim <= 1000){
+		GPIO_ClearValue(0,1<<28);
+		for(int i =0;i<16;i++){
+			Timer0_Wait(10);
+			GPIO_SetValue(0,1<<27);
+			Timer0_Wait(10);
+			GPIO_ClearValue(0,1<<27);
+		}
+	}
+
+}
+
 int main (void)
 {
     int32_t xoff = 0;
@@ -297,6 +320,20 @@ int main (void)
     uint32_t lux = 0;
     uint32_t trim = 0;
 
+
+    GPIO_SetDir(2, 1<<0, 1);
+    GPIO_SetDir(2, 1<<1, 1);
+
+    GPIO_SetDir(0, 1<<27, 1);
+    GPIO_SetDir(0, 1<<28, 1);
+    GPIO_SetDir(2, 1<<13, 1);
+    GPIO_SetDir(0, 1<<26, 1);
+
+
+
+    GPIO_ClearValue(0, 1<<27); //LM4811-clk
+    GPIO_ClearValue(0, 1<<28); //LM4811-up/dn
+    GPIO_ClearValue(2, 1<<13); //LM4811-shutdn
 
     init_i2c();
     init_adc();
@@ -479,6 +516,12 @@ int main (void)
 			lastLoadedBuffer = 1;
 
     	for(;;) {
+    		ADC_StartCmd(LPC_ADC,ADC_START_NOW);
+    		//Wait conversion complete
+    		while (!(ADC_ChannelGetStatus(LPC_ADC,ADC_CHANNEL_0,ADC_DATA_DONE)));
+    		trim = ADC_ChannelGetData(LPC_ADC,ADC_CHANNEL_0);
+    		changeVolume(trim);
+
     		if(playingBuffer == 2){
     			f_read(&file, buffer1, sizeof buffer1, &br);
     		}
