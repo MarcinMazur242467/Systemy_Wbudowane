@@ -230,6 +230,11 @@ static void init_Timer (int delay)
 	NVIC_EnableIRQ (TIMER1_IRQn);
 }
 
+static void stop_Timer()
+{
+	NVIC_DisableIRQ (TIMER1_IRQn);
+}
+
 BYTE buffer1[4096];
 BYTE buffer2[4096];
 UINT br;
@@ -238,20 +243,22 @@ int start = 1;
 int playingBuffer = 1;
 int iterator = 45;
 void TIMER1_IRQHandler (void) {
-
+	/*while(wsk++ < sizeof buffer1){
+						DAC_UpdateValue(LPC_DAC, (uint32_t)(buffer1[wsk]));
+						Timer0_us_Wait(delay);
+					}
+					wsk=0;*/
 			if(playingBuffer == 1)
 				DAC_UpdateValue(LPC_DAC, (uint32_t)buffer1[iterator]);
 			else if(playingBuffer == 2)
 				DAC_UpdateValue(LPC_DAC, (uint32_t)buffer2[iterator]);
 
-			for(;;){
-			DAC_UpdateValue(LPC_DAC, (uint32_t)buffer1[iterator]);
-			Timer0_us_Wait(125);
+
 			iterator++;
-			}
 
 
-			if(iterator == 4095){
+
+			if(iterator >= 4095){
 				if(playingBuffer == 1)
 					playingBuffer = 2;
 				else if(playingBuffer == 2)
@@ -259,14 +266,14 @@ void TIMER1_IRQHandler (void) {
 
 				iterator = 0;
 
-				if(playingBuffer == 2){
+				/*if(playingBuffer == 2){
 				    			f_read(&file, buffer1, sizeof buffer1, &br);
 				    			printf("buff2");
 				    		}
 				    		else if(playingBuffer == 1){
 				    		    f_read(&file, buffer2, sizeof buffer2, &br);
 				    			printf("buff1");
-				    		}
+				    		}*/
 			}
 
 
@@ -468,46 +475,25 @@ int main (void)
 									 | (buffer1[wsk+3] << 24));
 
 			int delay = 1000000 / sampleRate;
-			//init_Timer(delay);
+			init_Timer(delay);
 			lastLoadedBuffer = 1;
-			/*for(;;) {
-				f_read(&file, buffer1, sizeof buffer1, &br);
-				while(wsk++ < sizeof buffer1){
-					DAC_UpdateValue(LPC_DAC, (uint32_t)(buffer1[wsk]));
-					Timer0_us_Wait(delay);
-				}
-				wsk=0;
-				if(br == 0) { //eof
-					        	printf("End of file;\n");
-					        	break;
-					        }
-			}
-        }*/
-    	/*for(;;) {
-    		if(lastLoadedBuffer != playingBuffer)
-    			continue;
 
+    	for(;;) {
     		if(playingBuffer == 2){
     			f_read(&file, buffer1, sizeof buffer1, &br);
-    			printf("buff2");
     		}
     		else if(playingBuffer == 1){
     		    f_read(&file, buffer2, sizeof buffer2, &br);
-    			printf("buff1");
     		}
 
 	        if(br == 0) { //eof
 	        	printf("End of file;\n");
+	        	stop_Timer();
 	        	break;
 	        }
-    	}*/
+    	}
 
-
-
-        char str[80];
-        //sprintf(str, "x:%i y:%i z:%i\n", x,y,z);
-        //printf(str);
-        /* delay */
+        }
         Timer0_Wait(100);
     }
 }
