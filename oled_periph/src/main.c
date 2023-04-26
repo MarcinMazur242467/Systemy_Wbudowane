@@ -244,8 +244,13 @@ void TIMER1_IRQHandler (void) {
 			else if(playingBuffer == 2)
 				DAC_UpdateValue(LPC_DAC, (uint32_t)buffer2[iterator]);
 
+			for(;;){
+			DAC_UpdateValue(LPC_DAC, (uint32_t)buffer1[iterator]);
+			Timer0_us_Wait(125);
 			iterator++;
-			//Timer0_us_Wait(delay);
+			}
+
+
 			if(iterator == 4095){
 				if(playingBuffer == 1)
 					playingBuffer = 2;
@@ -253,7 +258,18 @@ void TIMER1_IRQHandler (void) {
 					playingBuffer = 1;
 
 				iterator = 0;
+
+				if(playingBuffer == 2){
+				    			f_read(&file, buffer1, sizeof buffer1, &br);
+				    			printf("buff2");
+				    		}
+				    		else if(playingBuffer == 1){
+				    		    f_read(&file, buffer2, sizeof buffer2, &br);
+				    			printf("buff1");
+				    		}
 			}
+
+
 
 		TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
 }
@@ -415,7 +431,7 @@ int main (void)
 
       int prevChosenFileIndex = 0;
       int chosenFileIndex = -1;
-
+      int lastLoadedBuffer = 1;
     while(1) {
         // Accelerometer
         acc_read(&x, &y, &z);
@@ -451,25 +467,41 @@ int main (void)
 									 |(buffer1[wsk+2] << 16)
 									 | (buffer1[wsk+3] << 24));
 
-			int delay = 1000/8;//1000000 / sampleRate;
-			init_Timer(delay);
-
+			int delay = 1000000 / sampleRate;
+			//init_Timer(delay);
+			lastLoadedBuffer = 1;
+			/*for(;;) {
+				f_read(&file, buffer1, sizeof buffer1, &br);
+				while(wsk++ < sizeof buffer1){
+					DAC_UpdateValue(LPC_DAC, (uint32_t)(buffer1[wsk]));
+					Timer0_us_Wait(delay);
+				}
+				wsk=0;
+				if(br == 0) { //eof
+					        	printf("End of file;\n");
+					        	break;
+					        }
 			}
-        int lastLoadedBuffer = 1;
-    	for(;;) {
+        }*/
+    	/*for(;;) {
     		if(lastLoadedBuffer != playingBuffer)
     			continue;
 
-    		if(playingBuffer == 2)
+    		if(playingBuffer == 2){
     			f_read(&file, buffer1, sizeof buffer1, &br);
-    		else if(playingBuffer == 1)
+    			printf("buff2");
+    		}
+    		else if(playingBuffer == 1){
     		    f_read(&file, buffer2, sizeof buffer2, &br);
+    			printf("buff1");
+    		}
 
 	        if(br == 0) { //eof
 	        	printf("End of file;\n");
 	        	break;
 	        }
-    	}
+    	}*/
+
 
 
         char str[80];
