@@ -20,6 +20,7 @@
 #include "lpc17xx_timer.h"
 #include "lpc17xx_clkpwr.h"
 #include "stdio.h"
+#include "pca9532.h"
 
 #include "light.h"
 #include "oled.h"
@@ -27,6 +28,7 @@
 #include "acc.h"
 #include "diskio.h"
 #include "ff.h"
+#include "math.h"
 
 #define UART_DEV LPC_UART3
 
@@ -37,6 +39,7 @@ static FATFS Fatfs[1];
 
 static uint32_t msTicks = 0;
 static uint8_t buf[10];
+static uint32_t trim = 0;
 
 static void intToString(int value, uint8_t* pBuf, uint32_t len, uint32_t base)
 {
@@ -227,6 +230,10 @@ static void init_Timer (int delay)
 	Match_Cfg.MatchChannel = 0;
 	Match_Cfg.MatchValue = delay;
 	TIM_ConfigMatch (LPC_TIM1, &Match_Cfg);
+	Match_Cfg.ResetOnMatch = TRUE;
+	Match_Cfg.MatchChannel = 1;
+	Match_Cfg.MatchValue = 1000000000;
+	TIM_ConfigMatch (LPC_TIM1, &Match_Cfg);
 	TIM_Cmd (LPC_TIM1, ENABLE);
 
 	NVIC_EnableIRQ (TIMER1_IRQn);
@@ -245,6 +252,7 @@ int start = 1;
 int playingBuffer = 1;
 int iterator = 45;
 void TIMER1_IRQHandler (void) {
+	if(TIM_GetIntStatus (LPC_TIM1, TIM_MR0_INT)){
 	/*while(wsk++ < sizeof buffer1){
 						DAC_UpdateValue(LPC_DAC, (uint32_t)(buffer1[wsk]));
 						Timer0_us_Wait(delay);
@@ -278,9 +286,17 @@ void TIMER1_IRQHandler (void) {
 				    		}*/
 			}
 
+			TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
+	}
+	if(TIM_GetIntStatus (LPC_TIM1, TIM_MR1_INT)){
+		ADC_StartCmd(LPC_ADC,ADC_START_NOW);
+		    					    		while (!(ADC_ChannelGetStatus(LPC_ADC,ADC_CHANNEL_0,ADC_DATA_DONE)));
+		    					    		trim = ADC_ChannelGetData(LPC_ADC,ADC_CHANNEL_0);
+		    					    		changeVolume(trim);
+		TIM_ClearIntPending(LPC_TIM1, TIM_MR1_INT);
 
+	}
 
-		TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
 }
 
 
@@ -288,7 +304,7 @@ void TIMER1_IRQHandler (void) {
 void changeVolume(uint32_t trim ){
 	if(trim >= 3000 ){
 		GPIO_SetValue(0,1<<28);
-		for(int i =0;i<16;i++){
+		for(int i =0;i<8;i++){
 			Timer0_Wait(10);
 			GPIO_SetValue(0,1<<27);
 			Timer0_Wait(10);
@@ -296,7 +312,7 @@ void changeVolume(uint32_t trim ){
 		}
 	}else if(trim <= 1000){
 		GPIO_ClearValue(0,1<<28);
-		for(int i =0;i<16;i++){
+		for(int i =0;i<8;i++){
 			Timer0_Wait(10);
 			GPIO_SetValue(0,1<<27);
 			Timer0_Wait(10);
@@ -318,7 +334,6 @@ int main (void)
 
     int32_t t = 0;
     uint32_t lux = 0;
-    uint32_t trim = 0;
 
 
     GPIO_SetDir(2, 1<<0, 1);
@@ -438,6 +453,7 @@ int main (void)
       char fileNames[20][13];
       int index = 0;
       char wavFiles[20][13];
+      DWORD filesLength[20];
 
       for(;;) {
     	  res = f_readdir(&dir, &Finfo);
@@ -457,6 +473,7 @@ int main (void)
 
     	  for(int j = 0; j < 13; j++) {
         	  wavFiles[index][j] = Finfo.fname[j];
+        	  filesLength[index] = Finfo.fsize;
     		  if(j < strlen(Finfo.fname)-4)
         		  fileNames[index][j] = Finfo.fname[j];
     		  else
@@ -512,24 +529,32 @@ int main (void)
 									 | (buffer1[wsk+3] << 24));
 
 			int delay = 1000000 / sampleRate;
+
+			DWORD currentFileSize = filesLength[chosenFileIndex];
+			int bufferAmount = currentFileSize / 4096;
+			int step = bufferAmount / 7;
+			int bufferNum = 1;
+			int i = 0;
 			init_Timer(delay);
 			lastLoadedBuffer = 1;
-
+			pca9532_setLeds(0,0xffff);
     	for(;;) {
-    		ADC_StartCmd(LPC_ADC,ADC_START_NOW);
-    		//Wait conversion complete
-    		while (!(ADC_ChannelGetStatus(LPC_ADC,ADC_CHANNEL_0,ADC_DATA_DONE)));
-    		trim = ADC_ChannelGetData(LPC_ADC,ADC_CHANNEL_0);
-    		changeVolume(trim);
 
+    		bufferNum++;
     		if(playingBuffer == 2){
     			f_read(&file, buffer1, sizeof buffer1, &br);
     		}
     		else if(playingBuffer == 1){
     		    f_read(&file, buffer2, sizeof buffer2, &br);
     		}
+    		if(bufferNum >= step*i){
+    			i++;
+    			int ledsOn = pow(2, i);
+    			pca9532_setLeds(ledsOn-1, 0xffff);
+    		}
 
-	        if(br == 0) { //eof
+
+	        if(br == 0) { //eof,
 	        	printf("End of file;\n");
 	        	stop_Timer();
 	        	break;
