@@ -230,14 +230,11 @@ static void init_Timer (int delay)
 	Match_Cfg.MatchChannel = 0;
 	Match_Cfg.MatchValue = delay;
 	TIM_ConfigMatch (LPC_TIM1, &Match_Cfg);
-	Match_Cfg.ResetOnMatch = TRUE;
-	Match_Cfg.MatchChannel = 1;
-	Match_Cfg.MatchValue = 1000000000;
-	TIM_ConfigMatch (LPC_TIM1, &Match_Cfg);
 	TIM_Cmd (LPC_TIM1, ENABLE);
 
 	NVIC_EnableIRQ (TIMER1_IRQn);
 }
+
 
 static void stop_Timer()
 {
@@ -250,18 +247,19 @@ UINT br;
 int start = 1;
 
 int playingBuffer = 1;
+BOOL emptyBuffer1 = TRUE;
+BOOL emptyBuffer2 = TRUE;
+BOOL isPlaying = FALSE;
 int iterator = 45;
 void TIMER1_IRQHandler (void) {
-	if(TIM_GetIntStatus (LPC_TIM1, TIM_MR0_INT)){
-	/*while(wsk++ < sizeof buffer1){
-						DAC_UpdateValue(LPC_DAC, (uint32_t)(buffer1[wsk]));
-						Timer0_us_Wait(delay);
-					}
-					wsk=0;*/
-			if(playingBuffer == 1)
+
+	if(isPlaying) {
+			if(playingBuffer == 1){
 				DAC_UpdateValue(LPC_DAC, (uint32_t)buffer1[iterator]);
-			else if(playingBuffer == 2)
+			}
+			else if(playingBuffer == 2) {
 				DAC_UpdateValue(LPC_DAC, (uint32_t)buffer2[iterator]);
+			}
 
 
 			iterator++;
@@ -269,34 +267,19 @@ void TIMER1_IRQHandler (void) {
 
 
 			if(iterator >= 4095){
-				if(playingBuffer == 1)
+				if(playingBuffer == 1) {
 					playingBuffer = 2;
-				else if(playingBuffer == 2)
+					emptyBuffer1 = TRUE;
+				}
+				else if(playingBuffer == 2) {
 					playingBuffer = 1;
+					emptyBuffer2 = TRUE;
+				}
 
 				iterator = 0;
-
-				/*if(playingBuffer == 2){
-				    			f_read(&file, buffer1, sizeof buffer1, &br);
-				    			printf("buff2");
-				    		}
-				    		else if(playingBuffer == 1){
-				    		    f_read(&file, buffer2, sizeof buffer2, &br);
-				    			printf("buff1");
-				    		}*/
 			}
-
-			TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
 	}
-	if(TIM_GetIntStatus (LPC_TIM1, TIM_MR1_INT)){
-		ADC_StartCmd(LPC_ADC,ADC_START_NOW);
-		    					    		while (!(ADC_ChannelGetStatus(LPC_ADC,ADC_CHANNEL_0,ADC_DATA_DONE)));
-		    					    		trim = ADC_ChannelGetData(LPC_ADC,ADC_CHANNEL_0);
-		    					    		changeVolume(trim);
-		TIM_ClearIntPending(LPC_TIM1, TIM_MR1_INT);
-
-	}
-
+	TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
 }
 
 
@@ -304,20 +287,16 @@ void TIMER1_IRQHandler (void) {
 void changeVolume(uint32_t trim ){
 	if(trim >= 3000 ){
 		GPIO_SetValue(0,1<<28);
-		for(int i =0;i<8;i++){
-			Timer0_Wait(10);
-			GPIO_SetValue(0,1<<27);
-			Timer0_Wait(10);
-			GPIO_ClearValue(0,1<<27);
-		}
+		Timer0_Wait(10);
+		GPIO_SetValue(0,1<<27);
+		Timer0_Wait(10);
+		GPIO_ClearValue(0,1<<27);
 	}else if(trim <= 1000){
 		GPIO_ClearValue(0,1<<28);
-		for(int i =0;i<8;i++){
-			Timer0_Wait(10);
-			GPIO_SetValue(0,1<<27);
-			Timer0_Wait(10);
-			GPIO_ClearValue(0,1<<27);
-		}
+		Timer0_Wait(10);
+		GPIO_SetValue(0,1<<27);
+		Timer0_Wait(10);
+		GPIO_ClearValue(0,1<<27);
 	}
 
 }
@@ -538,29 +517,61 @@ int main (void)
 			init_Timer(delay);
 			lastLoadedBuffer = 1;
 			pca9532_setLeds(0,0xffff);
+
+			uint8_t btn;
+			int exitIt = 0;
     	for(;;) {
-
-    		bufferNum++;
-    		if(playingBuffer == 2){
-    			f_read(&file, buffer1, sizeof buffer1, &br);
-    		}
-    		else if(playingBuffer == 1){
-    		    f_read(&file, buffer2, sizeof buffer2, &br);
-    		}
-    		if(bufferNum >= step*i){
-    			i++;
-    			int ledsOn = pow(2, i);
-    			pca9532_setLeds(ledsOn-1, 0xffff);
-    		}
+    		btn = ((GPIO_ReadValue(0) >> 4) & 0x01);
 
 
-	        if(br == 0) { //eof,
-	        	printf("End of file;\n");
-	        	stop_Timer();
-	        	break;
-	        }
+    		if(btn == 0) {
+    	        Timer0_Wait(100);
+    			isPlaying = !isPlaying;
+    			if(exitIt >= 5) {
+    				isPlaying = FALSE;
+    				printf("Exit song;\n");
+    				stop_Timer();
+    				break;
+    			}
+    			exitIt++;
+    		} else exitIt = 0;
+
+    		if(isPlaying) {
+				if(playingBuffer == 2){
+					if(emptyBuffer1){
+						bufferNum++;
+						f_read(&file, buffer1, sizeof buffer1, &br);
+						emptyBuffer1 = FALSE;
+					}
+				}
+				else if(playingBuffer == 1){
+					if(emptyBuffer2){
+						bufferNum++;
+						f_read(&file, buffer2, sizeof buffer2, &br);
+						emptyBuffer2 = FALSE;
+					}
+				}
+
+				ADC_StartCmd(LPC_ADC,ADC_START_NOW);
+				while (!(ADC_ChannelGetStatus(LPC_ADC,ADC_CHANNEL_0,ADC_DATA_DONE)));
+					  trim = ADC_ChannelGetData(LPC_ADC,ADC_CHANNEL_0);
+				changeVolume(trim);
+
+
+				if(bufferNum >= step*i){
+					i++;
+					int ledsOn = pow(2, i);
+					pca9532_setLeds(ledsOn-1, 0xffff);
+				}
+
+				if(br == 0) { //eof,
+					printf("End of file;\n");
+					stop_Timer();
+					isPlaying = FALSE;
+					break;
+				}
+    		}
     	}
-
         }
         Timer0_Wait(100);
     }
