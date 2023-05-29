@@ -24,16 +24,33 @@ static FATFS Fatfs[1];
 static uint32_t msTicks = 0;
 static uint32_t trim = 0;
 
+/*!
+ *  @brief    The procedure increments the msTicks global variable.
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 void SysTick_Handler(void) {
     msTicks++;
 }
 
+/*!
+ *  @brief    The procedure returns the value of the global variable msTicks.
+ *  @returns  uint32_t msTicks, which stores the number of "ticks" in units of elapsed time.
+ *  @side effects:
+ *            None
+ */
 static uint32_t getTicks(void)
 {
     return msTicks;
 }
 
-
+/*!
+ *  @brief    The procedure initiates the SSP.
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 static void init_ssp(void)
 {
 	SSP_CFG_Type SSP_ConfigStruct;
@@ -70,7 +87,12 @@ static void init_ssp(void)
 	SSP_Cmd(LPC_SSP1, ENABLE);
 }
 
-
+/*!
+ *  @brief    The procedure initiates I2C.
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 static void init_i2c(void)
 {
 	PINSEL_CFG_Type PinCfg;
@@ -90,6 +112,12 @@ static void init_i2c(void)
 	I2C_Cmd(LPC_I2C2, ENABLE);
 }
 
+/*!
+ *  @brief    The procedure initializes the ADC.
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 static void init_adc(void)
 {
 	PINSEL_CFG_Type PinCfg;
@@ -115,6 +143,14 @@ static void init_adc(void)
 
 }
 
+/*!
+ *  @brief    The procedure initializes a timer.
+ *  @param int delay
+ *             int value, which specifies the timer delay.
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 static void init_Timer (int delay)
 {
 	TIM_TIMERCFG_Type Config;
@@ -139,7 +175,12 @@ static void init_Timer (int delay)
 	NVIC_EnableIRQ (TIMER1_IRQn);
 }
 
-
+/*!
+ *  @brief    The procedure is used to disable interrupts associated with a specific timer.
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 static void stop_Timer()
 {
 	NVIC_DisableIRQ (TIMER1_IRQn);
@@ -156,6 +197,12 @@ BOOL emptyBuffer2 = TRUE;
 BOOL isPlaying = FALSE;
 int iterator = 45;
 
+/*!
+ *  @brief    The procedure handles the interrupt by playing the sound.
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 void TIMER1_IRQHandler (void) {
 
 	if(isPlaying) {
@@ -184,7 +231,14 @@ void TIMER1_IRQHandler (void) {
 }
 
 
-
+/*!
+ *  @brief    The procedure adjusts the volume of the LM4811 analog amplifier from +12dB to -33dB.
+ *  @param uint32_t trim
+ *             uint32_t value in the range from 0 to 4096
+ *  @returns  None
+ *  @side effects:
+ *            None
+ */
 void changeVolume(uint32_t trim ){
 	if(trim >= 3000 ) {
 		GPIO_SetValue(0,1<<28);
